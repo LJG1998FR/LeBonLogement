@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Coordonnees;
+use App\Entity\Coordonnee;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Coordonnees>
  *
- * @method Coordonnees|null find($id, $lockMode = null, $lockVersion = null)
- * @method Coordonnees|null findOneBy(array $criteria, array $orderBy = null)
- * @method Coordonnees[]    findAll()
- * @method Coordonnees[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Coordonnee|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Coordonnee|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Coordonnee[]    findAll()
+ * @method Coordonnee[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CoordonneesRepository extends ServiceEntityRepository
+class CoordonneeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Coordonnees::class);
+        parent::__construct($registry, Coordonnee::class);
     }
 
-    public function save(Coordonnees $entity, bool $flush = false): void
+    public function save(Coordonnee $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class CoordonneesRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Coordonnees $entity, bool $flush = false): void
+    public function remove(Coordonnee $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class CoordonneesRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Coordonnees[] Returns an array of Coordonnees objects
+//     * @return Coordonnee[] Returns an array of Coordonnee objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class CoordonneesRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Coordonnees
+//    public function findOneBySomeField($value): ?Coordonnee
 //    {
 //        return $this->createQueryBuilder('c')
 //            ->andWhere('c.exampleField = :val')

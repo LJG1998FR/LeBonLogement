@@ -1,38 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bien{% endblock %}
+{% block title %}LeBonLogement - Regarder un bien{% endblock %}
 
 {% block body %}
-    <h1>Bien</h1>
+    <div class="form">
+        <h2>Informations</h2>
+        <div class="form_row">
+            Adresse: {{ bien.adresse }}
+        </div>
+        <div class="form_row">
+            Code Postal: {{ bien.coordonnees.codepostal }}
+        </div>
+        <div class="form_row">
+            Commune: {{ bien.coordonnees.commune }}
+        </div>
+        <div class="form_row">
+            Prix: {{ bien.prix }} €
+        </div>
+        <div class="form_row">
+            Superficie: {{ bien.superficie }}
+        </div>
+    </div>
+    {% if app.request.attributes.get('_route') == 'bien_show' %}
+        <div class="imagesbox">
+            <h2>Images</h2>
+            {% for image in bien.images %}
+                <img class="imagesbien" src="{{ asset('/uploads/images/') }}{{ image.url }}" alt="Image" width="150">
+            {% endfor %}
+        </div>
+    {% endif %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ bien.id }}</td>
-            </tr>
-            <tr>
-                <th>Adresse</th>
-                <td>{{ bien.adresse }}</td>
-            </tr>
-            <tr>
-                <th>Prix</th>
-                <td>{{ bien.prix }}</td>
-            </tr>
-            <tr>
-                <th>Superficie</th>
-                <td>{{ bien.superficie }}</td>
-            </tr>
-            <tr>
-                <th>Date_de_depot</th>
-                <td>{{ bien.dateDeDepot ? bien.dateDeDepot|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="options">
+        <button class="btn btn-dark"><a href="{{ path('bien_all_index') }}">Retour</a></button>
+    </div>
+    <div id="myModal" class="modal">
 
-    <a href="{{ path('app_bien_index') }}">back to list</a>
+        <span class="close">&times;</span>
 
-    <a href="{{ path('app_bien_edit', {'id': bien.id}) }}">edit</a>
+        <img class="modal-content" id="img01">
+        <div id="caption"></div>
+    </div>
+{% endblock %}
 
-    {{ include('bien/_delete_form.html.twig') }}
+{% block javascripts %}
+    <script src="{{ asset('js/lebonlogement.js') }}" defer></script>
 {% endblock %}

@@ -3,14 +3,14 @@
 {% block title %}LeBonLogement - Accueil{% endblock %}
 
 {% block body %}
-    {% for flashMessage in app.session.flashbag.get('newuser') %}
+    {% for flashMessage in app.flashes('logout') %}
         <div class="alert alert-success">
             {{ flashMessage }}
         </div>
     {% endfor %}
-    {% for flashMessage in app.session.flashbag.get('logout') %}
-        <div class="alert alert-success">
-            {{ flashMessage }}
+    {% for message in app.flashes('login_notice') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
         </div>
     {% endfor %}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}

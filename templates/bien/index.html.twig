@@ -1,41 +1,71 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bien index{% endblock %}
+{% block title %}Liste des Biens de {{app.user}}{% endblock %}
 
 {% block body %}
-    <h1>Bien index</h1>
+    {% for flashMessage in app.flashes('nouveau_bien') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.flashes('modif_bien') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.flashes('image_suppr') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    <h1>Liste des Biens de {{app.user}} </h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Adresse</th>
-                <th>Prix</th>
-                <th>Superficie</th>
-                <th>Date_de_depot</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for bien in biens %}
-            <tr>
-                <td>{{ bien.id }}</td>
-                <td>{{ bien.adresse }}</td>
-                <td>{{ bien.prix }}</td>
-                <td>{{ bien.superficie }}</td>
-                <td>{{ bien.dateDeDepot ? bien.dateDeDepot|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_bien_show', {'id': bien.id}) }}">show</a>
-                    <a href="{{ path('app_bien_edit', {'id': bien.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% for bien in biens %}
+        {% if bien.proprietaire == app.user %}
+            <div class="mdc-card" id="biencard">
+                <div class="mdc-card__primary-action" tabindex="0">
+                    <div id="mainbox" class="my-card__media mdc-card__media mdc-card__media--16-9">
+                        {% set break = false %}
+                        {% for image in images %}
+                            {% if break == false %}
+                                {% if bien.id == image.bien.getId() %}
+                                    {% set break = true %}
+                                    <img class="img-thumbnail" id="mainphoto" src="{{ asset('uploads/photos/') }}{{ image.url }}" alt="photo">
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="demo-card__primary">
+                        <h2>{{ bien.adresse }}</h2>
+                    </div>
+                    <div class="demo-card__secondary mdc-typography mdc-typography--body2">
+                        <span>Prix: {{ bien.prix }} €</span><br>
+                        <span>Superficie: {{ bien.superficie }} m²</span><br>
+                        <span>Déposé le: {{ bien.dateDeDepot ? bien.dateDeDepot|date('d-m-Y') : '' }} à {{ bien.dateDeDepot ? bien.dateDeDepot|date('H:i') : '' }}</span>
+                    </div>
+                </div>
+                <div class="mdc-card__actions">
+                    <button class="mdc-button mdc-card__action mdc-card__action--button">
+                        {% if bien.proprietaire == app.user %}
+                            <a class="btn btn-dark" role="button" href="{{ path('app_bien_edit', {'id': bien.id}) }}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                            </svg></a>
+                        {% endif %}
+                    </button>
+                    <button class="mdc-button mdc-card__action mdc-card__action--button">
+                        {% if bien.proprietaire == app.user %}
+                            {{ include('bien/_delete_form.html.twig') }}
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
 
-    <a href="{{ path('app_bien_new') }}">Create new</a>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a class="btn btn-dark" role="button" href="{{ path('app_bien_new') }}">Ajouter Un Bien</a>
+    {% else %}
+        <span>Vous devez être connecté(e) pour ajouter un bien.</span>
+    {% endif %}
 {% endblock %}

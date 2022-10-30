@@ -33,12 +33,16 @@ class Bien
     #[ORM\JoinColumn(nullable: false)]
     private ?Coordonnee $coordonnees = null;
 
-    #[ORM\OneToMany(mappedBy: 'bien', targetEntity: Image::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'bien', targetEntity: Image::class, orphanRemoval: true, cascade:["persist"])]
     private Collection $images;
+
+    #[ORM\ManyToOne(inversedBy: 'biens')]
+    private ?Utilisateur $proprietaire = null;
 
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->date_de_depot=new \Datetime;
     }
 
     public function getId(): ?int
@@ -135,6 +139,18 @@ class Bien
                 $image->setBien(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProprietaire(): ?Utilisateur
+    {
+        return $this->proprietaire;
+    }
+
+    public function setProprietaire(?Utilisateur $proprietaire): self
+    {
+        $this->proprietaire = $proprietaire;
 
         return $this;
     }
