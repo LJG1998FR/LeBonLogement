@@ -15,24 +15,23 @@
         <div class="form_row">
             {{ form_row(form.images) }}
         </div>
-
-        {% if app.request.attributes.get('_route') == 'app_bien_edit' %}
-            <div class="imagesbox">
-                <h2>Images</h2>
-                {% for image in bien.images %}
-                    <div>
-                        <img class="imagesbien" src="{{ asset('/uploads/photos/') }}{{ image.url }}" alt="Image" width="150">
-                        
-                        {{ include('bien/_delete_image_form.html.twig') }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
         <div class="options">
-            {{ include('bien/_delete_form.html.twig') }}
-
             <button class="btn btn-dark"><a href="{{ path('app_bien_index') }}">Retour</a></button>
             <button class="btn btn-dark" style="margin-left:10px;">{{ button_label|default('Ajouter') }}</button>
         </div>
     {{ form_end(form) }}
+    {% if app.request.attributes.get('_route') == 'app_bien_edit' %}
+        {{ include('bien/_delete_form.html.twig') }}
+        <div class="imagesbox">
+            <h2>Images</h2>
+            {% for image in bien.images %}
+                <div>
+                    <img class="imagesbien" src="{{ asset('/uploads/photos/') }}{{ image.url }}" alt="Image" width="150">
+                    
+                    {{ include('bien/_delete_image_form.html.twig') }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
 </div>

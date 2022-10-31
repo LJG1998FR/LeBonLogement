@@ -142,7 +142,7 @@ class BienController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_bien_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_bien_delete', methods: ['POST'])]
     public function delete(Request $request, Bien $bien, BienRepository $bienRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$bien->getId(), $request->request->get('_token'))) {
