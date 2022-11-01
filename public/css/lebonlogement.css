@@ -136,3 +136,9 @@ label{
     padding: 10px 0;
     height: 150px;
 }
+
+.profilcontainer{
+    width: auto;
+    display: flex;
+    justify-content: center;
+}

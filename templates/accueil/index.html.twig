@@ -14,7 +14,7 @@
         </div>
     {% endfor %}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <div class="alert alert-success">Vous êtes connecté(e), {{ app.user.prenom }} {{ app.user.nom }} !</div>
+        <div class="alert alert-success">Vous êtes connecté(e), {{ app.user.nom }} {{ app.user.prenom }} !</div>
     {% endif %}
     <h1>Bienvenue sur LeBonLogement ! Venez chercher votre logement !</h1>
     <div id="homecarousel" style="width: 50%;margin: 0 25%;" class="carousel slide" data-bs-ride="carousel">

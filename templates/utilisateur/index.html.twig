@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User - {{app.user}}{% endblock %}
+
+{% block body %}
+    {% for flashMessage in app.flashes('message') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    <div class="profilcontainer">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Mon Profil</h5>
+                <h6 class="card-subtitle">
+                    {% if app.user == user %}
+                        Click <a style="margin:0; color:blue;" href="{{ path('user_changepassword',{'id': app.user.id}) }}">here</a> to change password
+                    {% endif %}
+                </h6>
+                <p class="card-text">Nom: {{app.user.nom}}</p>
+                <p class="card-text">Prénom: {{app.user.prenom}}</p>
+                <p class="card-text">Email: {{app.user.email}}</p>
+                <p class="card-text">Adresse physique: {{app.user.adresseprincipale}}</p>
+                <p class="card-text">Téléphone: {{app.user.telephone}}</p>
+                <a href="{{ path ('app_bien_index') }} " class="card-link">Voir mes biens</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

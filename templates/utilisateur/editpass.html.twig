@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Changer Le Mot De Passe{% endblock %}
+
+{% block body %}
+    {% for flashMessage in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    <h1>Changer Le Mot De Passe</h1>
+
+    <div class="form">
+        <form method="post">
+            <div class="form-field">
+                <label for="pass">Nouveau mot de passe</label>
+                <input type="password" id="pass" name="pass" class="form-control">
+            </div>
+            <div class="form-field">
+                <label for="pass2">Confirmer le nouveau mot de passe</label>
+                <input type="password" id="pass2" name="pass2" class="form-control">
+            </div>
+            <button class="btn btn-dark" style="margin-top:10px;">Enregistrer</button>
+        </form>
+    </div>
+    <button style="color:white;" type="button" class="btn btn-dark"><a href="{{ path ('app_user', {'id': app.user.id}) }}">Retour sur votre profil</a></button>
+
+{% endblock %}

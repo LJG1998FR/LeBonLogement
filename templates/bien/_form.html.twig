@@ -21,7 +21,6 @@
         </div>
     {{ form_end(form) }}
     {% if app.request.attributes.get('_route') == 'app_bien_edit' %}
-        {{ include('bien/_delete_form.html.twig') }}
         <div class="imagesbox">
             <h2>Images</h2>
             {% for image in bien.images %}
