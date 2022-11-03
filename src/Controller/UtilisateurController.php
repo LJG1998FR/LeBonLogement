@@ -41,11 +41,11 @@ class UtilisateurController extends AbstractController
                     )
                 );
                 $entityManager->flush();
-                $this->addFlash('message', 'Password updated!');
+                $this->addFlash('message', 'Le mot de passe a été modifié!');
 
                 return $this->redirectToRoute('app_user',['id' => $user->getId()]);
             }else{
-                $this->addFlash('error', 'Different passwords. Please retry.');
+                $this->addFlash('error', 'Les mots de passe sont différents. Veuillez réessayer.');
             }
         }
         return $this->render('utilisateur/editpass.html.twig');
