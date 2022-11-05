@@ -13,11 +13,14 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Address;
 
 class RegistrationController extends AbstractController
 {
     #[Route('/inscription', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UtilisateurAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UtilisateurAuthenticator $authenticator, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $user = new Utilisateur();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -34,7 +37,18 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
+            $email = (new TemplatedEmail())
+                ->from('ljgalt1@gmail.com')
+                ->to(new Address($user->getEmail()))
+                ->subject($user->getPrenom().', Bienvenue sur LeBonLogement.com!')
+                ->htmlTemplate('emails/registration.html.twig')
+                ->context([
+                    'prenom' => $user->getPrenom(),
+                    'nom' => $user->getNom(),
+                    'adresseEmail' => $user->getEmail(),
+                ]);
+
+            $mailer->send($email);
 
             return $userAuthenticator->authenticateUser(
                 $user,
