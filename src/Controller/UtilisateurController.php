@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Utilisateur;
 use App\Form\NewPasswordFormType;
+use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,8 +16,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class UtilisateurController extends AbstractController
 {
     #[Route('/{id}', name: 'app_user', methods: ['GET'])]
-    public function index(Utilisateur $utilisateur): Response
+    public function index(int $id, UtilisateurRepository $userRep): Response
     {
+        $utilisateur = $userRep->findOneBy(['id' => $id]); 
         return $this->render('utilisateur/index.html.twig', [
             'user' => $utilisateur,
             'biens' => $utilisateur->getBiens(),
@@ -24,8 +26,9 @@ class UtilisateurController extends AbstractController
     }
 
     #[Route('/{id}/changepassword', name: 'user_changepassword')]
-    public function editPass(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, Utilisateur $profilepageuser)
+    public function editPass(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, int $id, UtilisateurRepository $userRep)
     {
+        $profilepageuser = $userRep->findOneBy(['id' => $id]); 
         if ($this->getUser() != $profilepageuser) {
             return $this->redirectToRoute('accueil');
         }

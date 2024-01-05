@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User - {{app.user}}{% endblock %}
+{% block title %}Profil - {{app.user}}{% endblock %}
 
 {% block body %}
     {% for flashMessage in app.flashes('message') %}
@@ -15,7 +15,7 @@
                 <h5 class="card-title">Mon Profil</h5>
                 <h6 class="card-subtitle">
                     {% if app.user == user %}
-                        Click <a style="margin:0; color:blue;" href="{{ path('user_changepassword',{'id': app.user.id}) }}">here</a> to change password
+                        Cliquer <a style="margin:0; color:blue;" href="{{ path('user_changepassword',{'id': app.user.id}) }}">ici</a> pour changer de mot de passe
                     {% endif %}
                 </h6>
                 <p class="card-text">Nom: {{app.user.nom}}</p>
